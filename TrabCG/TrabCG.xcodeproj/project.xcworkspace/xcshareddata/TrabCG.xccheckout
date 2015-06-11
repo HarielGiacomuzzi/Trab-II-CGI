@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>F4F54D79-5135-4DC5-B3C1-CCAACA74E89F</string>
+	<key>IDESourceControlProjectName</key>
+	<string>project</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>0D208DE6F43C52029BD9DDDD474E77F5F4A2F9AE</key>
+		<string>https://github.com/HarielGiacomuzzi/Trab-II-CGI.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>TrabCG/TrabCG.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>0D208DE6F43C52029BD9DDDD474E77F5F4A2F9AE</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/HarielGiacomuzzi/Trab-II-CGI.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>0D208DE6F43C52029BD9DDDD474E77F5F4A2F9AE</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>0D208DE6F43C52029BD9DDDD474E77F5F4A2F9AE</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Trab-II-CGI</string>
+		</dict>
+	</array>
+</dict>
+</plist>
