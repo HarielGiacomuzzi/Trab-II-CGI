@@ -53,7 +53,9 @@ void PosicionaObservador(void)
     
     glLoadIdentity();
     
-    glTranslatef(-obsX,-obsY,-obsZ); //Outra opcao de camera
+    glTranslatef(-obsX,-obsY,-obsZ);
+    
+    //Outra opcao de camera
     //glRotatef(rotX,1,0,0);
     //glRotatef(rotY,0,1,0);
     
@@ -147,6 +149,7 @@ void DefineIluminacao()
 }
 
 void movimentaInimigos(){
+    glPushMatrix();
     for (int i = 0; i < inimigos.size(); i++) {
         inimigo a = inimigos[i];
         
@@ -157,8 +160,8 @@ void movimentaInimigos(){
         glutSolidCube(50);
     
         glTranslatef(a.posX, a.posY, a.posZ);
-
     }
+    glPopMatrix();
 }
 
 void criaInimigos(int qtd){
@@ -194,7 +197,7 @@ void Desenha(void)
     // Limpa a janela e o depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    EspecificaParametrosVisualizacao();
+    EspecificaParametrosVisualizacao ();
     DesenhaChao();
     
     //DefineIluminacao();
@@ -204,8 +207,12 @@ void Desenha(void)
     //adiciona forma geometricas randomicas como inimigos xD HueHue
     criaInimigos(15);
     
-    if(balas[0] == 1){
+    if(balas[0] == 1 /*&& moveEsfera >= -100*/){
         atiraEsfera();
+    }
+    else{
+        moveEsfera = obsZ;
+        balas[0] = 0;
     }
     
     glutSwapBuffers();
@@ -324,8 +331,11 @@ int main(void){
     char *argv[] = { (char *)"gl", 0 };
     
     balas[0] = 0;
-    moveEsfera = obsZ;
+    moveEsfera = -obsZ;
     glutInit(&argc,argv);
+    
+    
+   
     
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(800,600);
@@ -338,7 +348,9 @@ int main(void){
     glutSpecialFunc(GerenciaTecladoEspecial);
     Timer(10);
     Inicializa();
-    
+    printf("%d  ", obsX);
+    printf("%d  ", obsY);
+    printf("%d  ", obsZ);
     glutMainLoop();
     
     return 0;
