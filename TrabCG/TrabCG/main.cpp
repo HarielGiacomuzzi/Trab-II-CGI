@@ -22,6 +22,12 @@
 #define TAM 1000
 #define D 100
 
+struct inimigo{
+    GLfloat posX;
+    GLfloat posY;
+    GLfloat posZ;
+};
+
 int x_ini,y_ini,bot;
 GLfloat rotX, rotY, rotX_ini, rotY_ini;
 GLfloat obsX, obsY=200, obsZ=400, obsX_ini, obsY_ini, obsZ_ini;
@@ -30,6 +36,7 @@ GLfloat fAspect = 1, angle = 45;
 std::vector< glm::vec3 > vertices;
 std::vector< glm::vec3 > uvs;
 std::vector< glm::vec3 > normals;
+std::vector<inimigo> inimigos;
 
 GLfloat luzAmbiente[4]={0.2,0.2,0.2,1.0};
 GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0};		 // "cor"
@@ -42,11 +49,11 @@ void PosicionaObservador(void)
     
     glLoadIdentity();
     
-    //glTranslatef(-obsX,-obsY,-obsZ); //Outra opcao de camera
-    glRotatef(rotX,1,0,0);
-    glRotatef(rotY,0,1,0);
+    glTranslatef(-obsX,-obsY,-obsZ); //Outra opcao de camera
+    //glRotatef(rotX,1,0,0);
+    //glRotatef(rotY,0,1,0);
     
-    gluLookAt(obsX,obsY,obsZ, 0.0,0.0,0.0, 0.0,1.0,0.0);
+    //gluLookAt(obsX,obsY,obsZ, 0.0,0.0,0.0, 0.0,1.0,0.0);
 }
 
 // FunÁ„o usada para especificar o volume de visualizaÁ„o
@@ -135,6 +142,42 @@ void DefineIluminacao()
     glEnable(GL_LIGHTING);
 }
 
+void movimentaInimigos(){
+    for (int i = 0; i < inimigos.size(); i++) {
+        inimigo a = inimigos[i];
+        
+        double x = rand() % 10;
+        double y = rand() % 10;
+        double z = rand() % 10;
+        
+        a.posX += x;
+        a.posY += y;
+        a.posZ += 0;
+        
+        glutSolidCube(20);
+        glTranslatef(a.posX+x, a.posY+y, 0);
+
+    }
+}
+
+void criaInimigos(int qtd){
+    if (inimigos.size() > 0) {
+        movimentaInimigos();
+        
+        
+    }else{
+        for (int i = 0; i < qtd; i++) {
+            inimigo aux;
+            aux.posX = rand() % 100;
+            aux.posY = rand() % 100;
+            aux.posZ = rand() % 100;
+            
+            inimigos.push_back(aux);
+        }
+        criaInimigos(qtd);
+    }
+}
+
 // FunÁ„o callback chamada para fazer o desenho
 void Desenha(void)
 {
@@ -148,12 +191,8 @@ void Desenha(void)
     
     glColor3f(0.0f, 0.0f, 1.0f);
     
-    // Desenha o teapot com a cor corrente (solid)
-
-    
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
-
-    //glutSolidTeapot(50.0f);
+    //adiciona forma geometricas randomicas como inimigos xD HueHue
+    criaInimigos(5);
     
     glutSwapBuffers();
 }
@@ -242,10 +281,10 @@ void GerenciaTeclado(unsigned char key,int,int)
 {
     if (key == 27) exit(0);
     if (key == 'w') {
-        obsZ += 10;
+        obsZ -= 10;
     }
     if (key == 's') {
-        obsZ -= 10;
+        obsZ += 10;
     }
     if (key == 'a') {
         obsX -= 10;
@@ -272,7 +311,7 @@ int main(void)
     
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(800,600);
-    glutCreateWindow("Exercicio de Iluminacao");
+    glutCreateWindow("Trabalho II CGI");
     glutDisplayFunc(Desenha);
     glutReshapeFunc(AlteraTamanhoJanela);
     glutMotionFunc(GerenciaMovim);
@@ -281,9 +320,9 @@ int main(void)
     glutSpecialFunc(GerenciaTecladoEspecial);
     Inicializa();
     
-    objLoader *loader = new objLoader;
+    //objLoader *loader = new objLoader;
     
-    loader->loadModel("/Users/harielgiacomuzzi/Documents/Trab-II-CGI/TrabCG/TrabCG/IronMan/IronMan2.obj", &vertices, &uvs, &normals);
+    //loader->loadModel("/Users/harielgiacomuzzi/Documents/Trab-II-CGI/TrabCG/TrabCG/IronMan/IronMan2.obj", &vertices, &uvs, &normals);
     
     glutMainLoop();
     
