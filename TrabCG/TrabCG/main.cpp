@@ -150,16 +150,13 @@ void movimentaInimigos(){
     for (int i = 0; i < inimigos.size(); i++) {
         inimigo a = inimigos[i];
         
-        double x = rand() % 10;
-        double y = rand() % 10;
-        double z = rand() % 10;
-        
-        a.posX += x;
-        a.posY += y;
-        a.posZ += 0;
+        a.posX += rand() % 100;
+        a.posY += rand() % 100;
+        a.posZ += rand() % 100;
         
         glutSolidCube(50);
-        glTranslatef(a.posX+x, a.posY+y, 0);
+    
+        glTranslatef(a.posX, a.posY, a.posZ);
 
     }
 }
@@ -167,13 +164,11 @@ void movimentaInimigos(){
 void criaInimigos(int qtd){
     if (inimigos.size() > 0) {
         movimentaInimigos();
-        
-        
     }else{
         for (int i = 0; i < qtd; i++) {
             inimigo aux;
             aux.posX = rand() % 100;
-            aux.posY = rand() % 100;
+            aux.posY = 400;
             aux.posZ = rand() % 100;
             
             inimigos.push_back(aux);
@@ -207,7 +202,7 @@ void Desenha(void)
     glColor3f(0.0f, 0.0f, 1.0f);
     
     //adiciona forma geometricas randomicas como inimigos xD HueHue
-    criaInimigos(5);
+    criaInimigos(15);
     
     if(balas[0] == 1){
         atiraEsfera();
