@@ -135,6 +135,22 @@ void DefineIluminacao()
     glEnable(GL_LIGHTING);
 }
 
+
+int balas[1];
+int moveEsfera;
+
+// atiraEsfera
+
+void atiraEsfera(void){
+    glPushMatrix();
+    glColor3f(1.0f, 1.0f, 0.0f);
+    moveEsfera = moveEsfera - 10;
+    glTranslated(obsX, obsY, moveEsfera);
+    glutSolidSphere(1, 50, 50);
+    printf("%d", moveEsfera);
+    glPopMatrix();
+}
+
 // FunÁ„o callback chamada para fazer o desenho
 void Desenha(void)
 {
@@ -144,16 +160,19 @@ void Desenha(void)
     EspecificaParametrosVisualizacao();
     DesenhaChao();
     
-    DefineIluminacao();
+    //DefineIluminacao();
     
     glColor3f(0.0f, 0.0f, 1.0f);
     
     // Desenha o teapot com a cor corrente (solid)
 
-    
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
 
     //glutSolidTeapot(50.0f);
+    
+    if(balas[0] == 1){
+        atiraEsfera();
+    }
     
     glutSwapBuffers();
 }
@@ -253,7 +272,10 @@ void GerenciaTeclado(unsigned char key,int,int)
     if (key == 'd') {
         obsX += 10;
     }
-    
+    if (key == 32){
+        if(balas[0] == 0)
+            balas[0] = 1;
+    }
     glutPostRedisplay();
 }
 
@@ -262,12 +284,19 @@ void GerenciaTecladoEspecial(int key, int x,int y)
     glutPostRedisplay();
 }
 
+void Timer(int iUnused){
+    glutPostRedisplay();
+    glutTimerFunc(30, Timer, 0);
+}
+
 // Programa Principal
 int main(void)
 {
     int argc = 0;
     char *argv[] = { (char *)"gl", 0 };
     
+    balas[0] = 0;
+    moveEsfera = obsZ;
     glutInit(&argc,argv);
     
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -279,6 +308,7 @@ int main(void)
     glutMouseFunc(GerenciaMouse);
     glutKeyboardFunc(GerenciaTeclado);
     glutSpecialFunc(GerenciaTecladoEspecial);
+    Timer(10);
     Inicializa();
     
     objLoader *loader = new objLoader;
