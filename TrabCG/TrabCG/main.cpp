@@ -170,8 +170,12 @@ void Desenha(void)
 
     //glutSolidTeapot(50.0f);
     
-    if(balas[0] == 1){
+    if(balas[0] == 1 && moveEsfera >= -100){
         atiraEsfera();
+    }
+    else{
+        moveEsfera = obsZ;
+        balas[0] = 0;
     }
     
     glutSwapBuffers();
