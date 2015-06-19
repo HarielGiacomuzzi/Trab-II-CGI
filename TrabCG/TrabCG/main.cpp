@@ -28,6 +28,10 @@ struct inimigo{
     GLfloat posZ;
 };
 
+
+int balas[1];
+int moveEsfera;
+
 int x_ini,y_ini,bot;
 GLfloat rotX, rotY, rotX_ini, rotY_ini;
 GLfloat obsX, obsY=200, obsZ=400, obsX_ini, obsY_ini, obsZ_ini;
@@ -154,7 +158,7 @@ void movimentaInimigos(){
         a.posY += y;
         a.posZ += 0;
         
-        glutSolidCube(20);
+        glutSolidCube(50);
         glTranslatef(a.posX+x, a.posY+y, 0);
 
     }
@@ -178,6 +182,17 @@ void criaInimigos(int qtd){
     }
 }
 
+// atiraEsfera
+void atiraEsfera(void){
+    glPushMatrix();
+    glColor3f(1.0f, 1.0f, 0.0f);
+    moveEsfera = moveEsfera - 10;
+    glTranslated(obsX, obsY, moveEsfera);
+    glutSolidSphere(1, 50, 50);
+    printf("%d", moveEsfera);
+    glPopMatrix();
+}
+
 // FunÁ„o callback chamada para fazer o desenho
 void Desenha(void)
 {
@@ -187,12 +202,16 @@ void Desenha(void)
     EspecificaParametrosVisualizacao();
     DesenhaChao();
     
-    DefineIluminacao();
+    //DefineIluminacao();
     
     glColor3f(0.0f, 0.0f, 1.0f);
     
     //adiciona forma geometricas randomicas como inimigos xD HueHue
     criaInimigos(5);
+    
+    if(balas[0] == 1){
+        atiraEsfera();
+    }
     
     glutSwapBuffers();
 }
@@ -233,8 +252,7 @@ void AlteraTamanhoJanela(GLsizei w, GLsizei h)
 // FunÁ„o callback chamada para gerenciar eventos do mouse
 void GerenciaMouse(int button, int state, int x, int y)
 {
-    if(state==GLUT_DOWN)
-    {
+    if(state==GLUT_DOWN){
         x_ini = x;
         y_ini = y;
         obsX_ini = obsX;
@@ -244,13 +262,13 @@ void GerenciaMouse(int button, int state, int x, int y)
         rotY_ini = rotY;
         bot = button;
     }
-    else bot = -1;
+    else{
+        bot = -1;
+    }
 }
 
-void GerenciaMovim(int x, int y)
-{
-    if(bot==GLUT_LEFT_BUTTON)
-    {
+void GerenciaMovim(int x, int y){
+    if(bot==GLUT_LEFT_BUTTON){
         int deltax = x_ini - x;
         int deltay = y_ini - y;
         
@@ -258,15 +276,13 @@ void GerenciaMovim(int x, int y)
         rotX = rotX_ini - deltay/SENS_ROT;
     }
     
-    else if(bot==GLUT_RIGHT_BUTTON)
-    {
+    else if(bot==GLUT_RIGHT_BUTTON){
         int deltaz = y_ini - y;
         
         obsZ = obsZ_ini + deltaz/SENS_OBS;
     }
     
-    else if(bot==GLUT_MIDDLE_BUTTON)
-    {
+    else if(bot==GLUT_MIDDLE_BUTTON){
         int deltax = x_ini - x;
         int deltay = y_ini - y;
         
@@ -277,8 +293,7 @@ void GerenciaMovim(int x, int y)
     glutPostRedisplay();
 }
 
-void GerenciaTeclado(unsigned char key,int,int)
-{
+void GerenciaTeclado(unsigned char key,int,int){
     if (key == 27) exit(0);
     if (key == 'w') {
         obsZ -= 10;
@@ -292,21 +307,29 @@ void GerenciaTeclado(unsigned char key,int,int)
     if (key == 'd') {
         obsX += 10;
     }
-    
+    if (key == 32){
+        if(balas[0] == 0)
+            balas[0] = 1;
+    }
     glutPostRedisplay();
 }
 
-void GerenciaTecladoEspecial(int key, int x,int y)
-{
+void GerenciaTecladoEspecial(int key, int x,int y){
     glutPostRedisplay();
+}
+
+void Timer(int iUnused){
+    glutPostRedisplay();
+    glutTimerFunc(30, Timer, 0);
 }
 
 // Programa Principal
-int main(void)
-{
+int main(void){
     int argc = 0;
     char *argv[] = { (char *)"gl", 0 };
     
+    balas[0] = 0;
+    moveEsfera = obsZ;
     glutInit(&argc,argv);
     
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -318,11 +341,8 @@ int main(void)
     glutMouseFunc(GerenciaMouse);
     glutKeyboardFunc(GerenciaTeclado);
     glutSpecialFunc(GerenciaTecladoEspecial);
+    Timer(10);
     Inicializa();
-    
-    //objLoader *loader = new objLoader;
-    
-    //loader->loadModel("/Users/harielgiacomuzzi/Documents/Trab-II-CGI/TrabCG/TrabCG/IronMan/IronMan2.obj", &vertices, &uvs, &normals);
     
     glutMainLoop();
     
