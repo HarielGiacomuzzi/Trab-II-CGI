@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		DBCCCFA61B29CA3800EB4BEB /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DBCCCFA51B29CA3800EB4BEB /* main.cpp */; };
+		DBCCCFAE1B29CFCD00EB4BEB /* objLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DBCCCFAC1B29CFCD00EB4BEB /* objLoader.cpp */; };
+		DBCCCFB11B33408000EB4BEB /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBCCCFB01B33408000EB4BEB /* OpenGL.framework */; };
+		DBCCCFB31B33408500EB4BEB /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBCCCFB21B33408500EB4BEB /* GLUT.framework */; };
+		DBCCCFB51B33408B00EB4BEB /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBCCCFB41B33408B00EB4BEB /* GLKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +29,13 @@
 /* Begin PBXFileReference section */
 		DBCCCFA21B29CA3800EB4BEB /* TrabCG */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TrabCG; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBCCCFA51B29CA3800EB4BEB /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		DBCCCFAC1B29CFCD00EB4BEB /* objLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = objLoader.cpp; sourceTree = "<group>"; };
+		DBCCCFAD1B29CFCD00EB4BEB /* objLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objLoader.h; sourceTree = "<group>"; };
+		DBCCCFAF1B29DEA300EB4BEB /* glm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = glm; sourceTree = "<group>"; };
+		DBCCCFB01B33408000EB4BEB /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		DBCCCFB21B33408500EB4BEB /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		DBCCCFB41B33408B00EB4BEB /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		DBCCCFB61B33461F00EB4BEB /* IronMan */ = {isa = PBXFileReference; lastKnownFileType = folder; path = IronMan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +43,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBCCCFB51B33408B00EB4BEB /* GLKit.framework in Frameworks */,
+				DBCCCFB31B33408500EB4BEB /* GLUT.framework in Frameworks */,
+				DBCCCFB11B33408000EB4BEB /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -41,6 +55,9 @@
 		DBCCCF991B29CA3800EB4BEB = {
 			isa = PBXGroup;
 			children = (
+				DBCCCFB41B33408B00EB4BEB /* GLKit.framework */,
+				DBCCCFB21B33408500EB4BEB /* GLUT.framework */,
+				DBCCCFB01B33408000EB4BEB /* OpenGL.framework */,
 				DBCCCFA41B29CA3800EB4BEB /* TrabCG */,
 				DBCCCFA31B29CA3800EB4BEB /* Products */,
 			);
@@ -58,6 +75,10 @@
 			isa = PBXGroup;
 			children = (
 				DBCCCFA51B29CA3800EB4BEB /* main.cpp */,
+				DBCCCFAC1B29CFCD00EB4BEB /* objLoader.cpp */,
+				DBCCCFAD1B29CFCD00EB4BEB /* objLoader.h */,
+				DBCCCFB61B33461F00EB4BEB /* IronMan */,
+				DBCCCFAF1B29DEA300EB4BEB /* glm */,
 			);
 			path = TrabCG;
 			sourceTree = "<group>";
@@ -118,6 +139,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBCCCFAE1B29CFCD00EB4BEB /* objLoader.cpp in Sources */,
 				DBCCCFA61B29CA3800EB4BEB /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

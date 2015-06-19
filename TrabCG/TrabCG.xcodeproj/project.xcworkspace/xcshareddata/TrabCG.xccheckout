@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>F4F54D79-5135-4DC5-B3C1-CCAACA74E89F</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>TrabCG</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>0D208DE6F43C52029BD9DDDD474E77F5F4A2F9AE</key>
 		<string>https://github.com/HarielGiacomuzzi/Trab-II-CGI.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>TrabCG/TrabCG.xcodeproj/project.xcworkspace</string>
+	<string>TrabCG/TrabCG.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>0D208DE6F43C52029BD9DDDD474E77F5F4A2F9AE</key>
