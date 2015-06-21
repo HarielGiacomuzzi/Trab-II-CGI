@@ -153,13 +153,20 @@ void movimentaInimigos(){
     for (int i = 0; i < inimigos.size(); i++) {
         inimigo a = inimigos[i];
         
-        a.posX += rand() % 100;
-        a.posY += rand() % 100;
-        a.posZ += rand() % 100;
+        if (rand()%10 > 5) {
+            a.posX ++;
+        }else{
+            a.posX --;
+        }
+        if (rand()%10 > 5) {
+            a.posZ ++;
+        }else{
+            a.posZ --;
+        }
         
         glutSolidCube(50);
     
-        glTranslatef(a.posX, a.posY, a.posZ);
+        glTranslatef(a.posX, 0, a.posZ);
     }
     glPopMatrix();
 }
