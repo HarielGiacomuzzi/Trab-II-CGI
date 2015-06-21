@@ -28,9 +28,15 @@ struct inimigo{
     GLfloat posZ;
 };
 
+struct balas{
+    GLfloat posX;
+    GLfloat posY;
+    GLfloat posZ;
+};
 
-int balas[1];
-int moveEsfera;
+balas balas[20];
+int numeroDeBalas = 20;
+int moveEsfera, moveEsferaX, moveEsferaY;
 
 int x_ini,y_ini,bot;
 GLfloat rotX, rotY, rotX_ini, rotY_ini;
@@ -185,7 +191,7 @@ void atiraEsfera(void){
     glPushMatrix();
     glColor3f(1.0f, 1.0f, 0.0f);
     moveEsfera = moveEsfera - 10;
-    glTranslated(obsX, obsY, moveEsfera);
+    glTranslated(moveEsferaX, moveEsferaY, moveEsfera);
     glutSolidSphere(1, 50, 50);
     printf("%d", moveEsfera);
     glPopMatrix();
@@ -206,14 +212,16 @@ void Desenha(void)
     
     //adiciona forma geometricas randomicas como inimigos xD HueHue
     criaInimigos(15);
-    
-    if(balas[0] == 1 /*&& moveEsfera >= -100*/){
-        atiraEsfera();
+    /*
+    if(balas[0] == 1 && moveEsfera >= -100){
+            atiraEsfera();
     }
     else{
+        moveEsferaX = obsX;
+        moveEsferaY = obsY;
         moveEsfera = obsZ;
         balas[0] = 0;
-    }
+    }*/
     
     glutSwapBuffers();
 }
@@ -310,8 +318,9 @@ void GerenciaTeclado(unsigned char key,int,int){
         obsX += 10;
     }
     if (key == 32){
-        if(balas[0] == 0)
-            balas[0] = 1;
+        if(numeroDeBalas > 0){
+            numeroDeBalas--;
+        }
     }
     glutPostRedisplay();
 }
@@ -330,8 +339,13 @@ int main(void){
     int argc = 0;
     char *argv[] = { (char *)"gl", 0 };
     
-    balas[0] = 0;
-    moveEsfera = -obsZ;
+    
+    for(int i = 0; i < numeroDeBalas; i++){
+        balas[i].posX = obsX;
+        balas[i].posY = obsY;
+        balas[i].posZ = -obsZ;
+    }
+    
     glutInit(&argc,argv);
     
     
