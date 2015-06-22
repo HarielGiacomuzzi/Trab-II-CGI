@@ -42,6 +42,7 @@ int x_ini,y_ini,bot;
 GLfloat rotX, rotY, rotX_ini, rotY_ini;
 GLfloat obsX, obsY=200, obsZ=400, obsX_ini, obsY_ini, obsZ_ini;
 GLfloat fAspect = 1, angle = 45;
+GLfloat win_width = 800, win_height = 600;
 
 std::vector< glm::vec3 > vertices;
 std::vector< glm::vec3 > uvs;
@@ -53,17 +54,20 @@ GLfloat luzDifusa[4]={0.7,0.7,0.7,1.0};		 // "cor"
 GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};// "brilho"
 GLfloat posicaoLuz[4]={0.0, 30.0, 120.0, 1.0};
 
+void checkCollisions();
+void output(int x, int y, float r, float g, float b, int font, std::string string);
+
 void PosicionaObservador(void)
 {
     glMatrixMode(GL_MODELVIEW);
     
     glLoadIdentity();
     
-    glTranslatef(-obsX,-obsY,-obsZ);
+    glTranslatef(-obsX,0,-obsZ);
     
     //Outra opcao de camera
     //glRotatef(rotX,1,0,0);
-    //glRotatef(rotY,0,1,0);
+    glRotatef(rotY,0,1,0);
     
     //gluLookAt(obsX,obsY,obsZ, 0.0,0.0,0.0, 0.0,1.0,0.0);
 }
@@ -154,18 +158,26 @@ void DefineIluminacao()
     glEnable(GL_LIGHTING);
 }
 
+double randfrom(double min, double max)
+{
+    double range = (max - min);
+    double div = RAND_MAX / range;
+    return min + (rand() / div);
+}
+
 void movimentaInimigos(){
     glPushMatrix();
     for (int i = 0; i < inimigos.size(); i++) {
         inimigo a = inimigos[i];
         
-        a.posX += rand() % 100;
-        a.posY += rand() % 100;
-        a.posZ += rand() % 100;
+        (rand()%10)/2 == 0 ? a.posX += randfrom(0, 1) : a.posX += randfrom(0, 1);
+        (rand()%10)/2 == 0 ? a.posZ += randfrom(0, 1) : a.posZ += randfrom(0, 1);
+        
+        //printf("%i - X: %f, Z: %f\n", i,a.posX,a.posZ);
         
         glutSolidCube(50);
     
-        glTranslatef(a.posX, a.posY, a.posZ);
+        glTranslatef(a.posX, 0, a.posZ);
     }
     glPopMatrix();
 }
@@ -176,9 +188,9 @@ void criaInimigos(int qtd){
     }else{
         for (int i = 0; i < qtd; i++) {
             inimigo aux;
-            aux.posX = rand() % 100;
+            aux.posX = (rand()%10)/2 == 0 ? randfrom(0, 100) : -randfrom(0, 100);
             aux.posY = 400;
-            aux.posZ = rand() % 100;
+            aux.posZ = (rand()%10)/2 == 0 ? randfrom(0, 100) : -randfrom(0, 100);
             
             inimigos.push_back(aux);
         }
@@ -223,6 +235,8 @@ void Desenha(void)
         balas[0] = 0;
     }*/
     
+    checkCollisions();
+    
     glutSwapBuffers();
 }
 
@@ -253,6 +267,9 @@ void AlteraTamanhoJanela(GLsizei w, GLsizei h)
     // Especifica o tamanho da viewport
     glViewport(0, 0, w, h);
     
+    win_height = (GLfloat)h;
+    win_width = (GLfloat)w;
+    
     // Calcula a correÁ„o de aspecto
     fAspect = (GLfloat)w/(GLfloat)h;
     
@@ -268,8 +285,8 @@ void GerenciaMouse(int button, int state, int x, int y)
         obsX_ini = obsX;
         obsY_ini = obsY;
         obsZ_ini = obsZ;
-        rotX_ini = rotX;
-        rotY_ini = rotY;
+        //rotX_ini = rotX;
+        //rotY_ini = rotY;
         bot = button;
     }
     else{
@@ -317,12 +334,49 @@ void GerenciaTeclado(unsigned char key,int,int){
     if (key == 'd') {
         obsX += 10;
     }
+    if (key == 'e') {
+        rotY += 5;
+    }
+    if (key == 'q') {
+        rotY -= 5;
+    }
     if (key == 32){
         if(numeroDeBalas > 0){
             numeroDeBalas--;
         }
     }
     glutPostRedisplay();
+}
+
+void checkCollisions(){
+    for (int i = 0; i < inimigos.size(); i++) {
+        inimigo a = inimigos[i];
+        
+        if ((abs(obsX - a.posX) <  15) && (abs(obsZ - a.posZ) <  15)){
+            output(0, 0, 255.0, 255.0, 255.0, 0, "You Die!");
+        }
+    }
+}
+
+void output(int x, int y, float r, float g, float b, int font, std::string string)
+{
+    gluOrtho2D(0.0, win_width, 0.0, win_height);
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+    glColor3f(1.0f, 0.0f, 0.0f);//needs to be called before RasterPos
+    glRasterPos2i(10, 10);
+    int len, i;
+    len = (int)string.size();
+    for (i = 0; i < len; i++) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, string[i]);
+    }
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glEnable(GL_TEXTURE_2D);
+    
 }
 
 void GerenciaTecladoEspecial(int key, int x,int y){
