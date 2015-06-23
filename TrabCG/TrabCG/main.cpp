@@ -283,15 +283,12 @@ void Desenha(void)
     glMatrixMode(GL_MODELVIEW); // change current matrix to MODELVIEW matrix again
     glLoadIdentity(); // reset it to identity matrix
     glPushMatrix(); // push current state of MODELVIEW matrix to stack
-    glLoadIdentity(); // reset it again. (may not be required, but it my convention)
-    //glRasterPos2i(obsX, obsY); // raster position in 2D
-    glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'a'); // generation of characters in our text with 9 by 15 GLU font
-    glPopMatrix(); // get MODELVIEW matrix value from stack
-    glMatrixMode(GL_PROJECTION); // change current matrix mode to PROJECTION
-    glLoadMatrixd(matrix); // reset
-    glMatrixMode(GL_MODELVIEW); // change current matrix mode to MODELVIEW
-    
-    
+    glRasterPos2d(10, 10); // raster position in 2D
+    glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'A');
+    glPopMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glLoadMatrixd(matrix);
+    glMatrixMode(GL_MODELVIEW);
     
     checkCollisions();
     
@@ -426,22 +423,26 @@ void checkCollisions(){
 
 void output(int x, int y, float r, float g, float b, int font, std::string string)
 {
-    gluOrtho2D(0.0, win_width, 0.0, win_height);
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-    glColor3f(1.0f, 0.0f, 0.0f);//needs to be called before RasterPos
-    glRasterPos2i(10, 10);
+    glMatrixMode(GL_PROJECTION); // change the current matrix to PROJECTION
+    double matrix[16]; // 16 doubles in stack memory
+    glGetDoublev(GL_PROJECTION_MATRIX, matrix); // get the values from PROJECTION matrix to local variable
+    glLoadIdentity(); // reset PROJECTION matrix to identity matrix
+    glOrtho(0, 800, 0, 600, -5, 5); // orthographic perspective
+    glMatrixMode(GL_MODELVIEW); // change current matrix to MODELVIEW matrix again
+    glLoadIdentity(); // reset it to identity matrix
+    glPushMatrix(); // push current state of MODELVIEW matrix to stack
+    //glLoadIdentity();
+    glRasterPos2d(10, 10); // raster position in 2D
     int len, i;
     len = (int)string.size();
     for (i = 0; i < len; i++) {
+        printf("entra aqui");
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, string[i]);
     }
-    glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
     glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glEnable(GL_TEXTURE_2D);
+    glLoadMatrixd(matrix);
+    glMatrixMode(GL_MODELVIEW);
     
 }
 
