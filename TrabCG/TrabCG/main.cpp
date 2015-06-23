@@ -275,7 +275,21 @@ void Desenha(void)
     }*/
     
     
-    
+    glMatrixMode(GL_PROJECTION); // change the current matrix to PROJECTION
+    double matrix[16]; // 16 doubles in stack memory
+    glGetDoublev(GL_PROJECTION_MATRIX, matrix); // get the values from PROJECTION matrix to local variable
+    glLoadIdentity(); // reset PROJECTION matrix to identity matrix
+    glOrtho(0, 800, 0, 600, -5, 5); // orthographic perspective
+    glMatrixMode(GL_MODELVIEW); // change current matrix to MODELVIEW matrix again
+    glLoadIdentity(); // reset it to identity matrix
+    glPushMatrix(); // push current state of MODELVIEW matrix to stack
+    glLoadIdentity(); // reset it again. (may not be required, but it my convention)
+    //glRasterPos2i(obsX, obsY); // raster position in 2D
+    glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'a'); // generation of characters in our text with 9 by 15 GLU font
+    glPopMatrix(); // get MODELVIEW matrix value from stack
+    glMatrixMode(GL_PROJECTION); // change current matrix mode to PROJECTION
+    glLoadMatrixd(matrix); // reset
+    glMatrixMode(GL_MODELVIEW); // change current matrix mode to MODELVIEW
     
     
     
