@@ -39,7 +39,7 @@ balas vetBalas[20];
 int bala = 0;
 int tiro = 0;
 int numeroDeBalas = 20;
-int moveEsfera, moveEsferaX, moveEsferaY;
+int moveEsfera, moveEsferaX, moveEsferaY, rotEsferaY;
 
 int x_ini,y_ini,bot;
 GLfloat rotX, rotY, rotX_ini, rotY_ini;
@@ -70,6 +70,7 @@ void PosicionaObservador(void)
     
     //Outra opcao de camera
     //glRotatef(rotX,1,0,0);
+    
     glRotatef(rotY,0,1,0);
     
     //gluLookAt(obsX,obsY,obsZ, 0.0,0.0,0.0, 0.0,1.0,0.0);
@@ -169,20 +170,24 @@ double randfrom(double min, double max)
 }
 
 void movimentaInimigos(){
-    glPushMatrix();
+    
     for (int i = 0; i < inimigos.size(); i++) {
+        glPushMatrix();
+        //glLoadIdentity();
         inimigo a = inimigos[i];
         
         (rand()%10)/2 == 0 ? a.posX += randfrom(0, 10) : a.posX += randfrom(0, 10);
         (rand()%10)/2 == 0 ? a.posZ += randfrom(0, 10) : a.posZ += randfrom(0, 10);
         
-        printf("%i - X: %f, Z: %f\n", i,a.posX,a.posZ);
+        //printf("%i - X: %f, Z: %f\n", i,a.posX,a.posZ);
+        
         
         glutSolidCube(50);
     
         glTranslatef(a.posX, 0, a.posZ);
+        glPopMatrix();
     }
-    glPopMatrix();
+    
 }
 
 void criaInimigos(int qtd){
@@ -205,10 +210,12 @@ void criaInimigos(int qtd){
 void atiraEsfera(void){
     glPushMatrix();
     glColor3f(1.0f, 1.0f, 0.0f);
+    glLoadIdentity();
     moveEsfera = moveEsfera - 10;
     glTranslated(moveEsferaX, moveEsferaY, moveEsfera);
-    glutSolidSphere(1, 50, 50);
-    printf("%d", moveEsfera);
+    //glRotatef(rotEsferaY, 0, 1, 0);
+    glutSolidSphere(10, 50, 50);
+    printf("%d ", moveEsfera);
     glPopMatrix();
 }
 // atira mais de uma esfera
@@ -246,7 +253,8 @@ void Desenha(void)
     else{
         moveEsferaX = obsX;
         moveEsferaY = 0;
-        moveEsfera = obsZ;
+        moveEsfera = 0;
+        rotEsferaY = rotY;
         bala = 0;
     }
     
@@ -389,7 +397,7 @@ void checkCollisions(){
     for (int i = 0; i < inimigos.size(); i++) {
         inimigo a = inimigos[i];
         
-        if ( (abs(moveEsferaX - a.posX) <  50) && (abs(moveEsfera - a.posZ) <  50) && bala == 1){
+        if ( (abs(moveEsferaX - a.posX) <  5) && (abs(moveEsfera - a.posZ) <  5) && bala == 1){
             output(0, 0, 255.0, 255.0, 255.0, 0, "Bateu!");
             printf("bateu no inimigo");
             bala = 0;
@@ -437,14 +445,6 @@ int main(void){
     
     char *argv[] = { (char *)"gl", 0 };
     
-    
-    
-    moveEsferaX = obsX;
-    moveEsferaY = 0;
-    moveEsfera = obsZ;
-    
-    
-    
     glutInit(&argc,argv);
     
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -458,9 +458,6 @@ int main(void){
     glutSpecialFunc(GerenciaTecladoEspecial);
     Timer(10);
     Inicializa();
-    printf("%d  ", obsX);
-    printf("%d  ", obsY);
-    printf("%d  ", obsZ);
     glutMainLoop();
     
     return 0;
