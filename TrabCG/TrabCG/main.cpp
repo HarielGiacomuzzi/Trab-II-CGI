@@ -160,20 +160,15 @@ double randfrom(double min, double max)
 }
 
 void movimentaInimigos(){
-    glPushMatrix();
     for (int i = 0; i < inimigos.size(); i++) {
         inimigo a = inimigos[i];
         
-        (rand()%10)/2 == 0 ? a.posX += randfrom(0, 1) : a.posX += randfrom(0, 1);
-        (rand()%10)/2 == 0 ? a.posZ += randfrom(0, 1) : a.posZ += randfrom(0, 1);
-        
-        //printf("%i - X: %f, Z: %f\n", i,a.posX,a.posZ);
-        
-        glutSolidCube(50);
-    
-        glTranslatef(a.posX, 0, a.posZ);
+        (rand()%10)/2 == 0 ? a.posX += randfrom(0, 10) : a.posX -= randfrom(0, 10);
+        (rand()%10)/2 == 0 ? a.posZ += randfrom(0, 10) : a.posZ -= randfrom(0, 10);
+        if(i == 0){
+            printf("X: %f - Z: %f\n",a.posX,a.posZ);
+        }
     }
-    glPopMatrix();
 }
 
 void criaInimigos(int qtd){
@@ -182,9 +177,9 @@ void criaInimigos(int qtd){
     }else{
         for (int i = 0; i < qtd; i++) {
             inimigo aux;
-            aux.posX = (rand()%10)/2 == 0 ? randfrom(0, 100) : -randfrom(0, 100);
+            aux.posX = (rand()%10)/2 == 0 ? randfrom(0, 300) : -randfrom(0, 300);
             aux.posY = 400;
-            aux.posZ = (rand()%10)/2 == 0 ? randfrom(0, 100) : -randfrom(0, 100);
+            aux.posZ = (rand()%10)/2 == 0 ? randfrom(0, 300) : -randfrom(0, 300);
             
             inimigos.push_back(aux);
         }
@@ -218,6 +213,16 @@ void Desenha(void)
     
     //adiciona forma geometricas randomicas como inimigos xD HueHue
     criaInimigos(15);
+    
+    for (int i = 0; i < inimigos.size(); i++) {
+        inimigo a = inimigos[i];
+        
+        glPushMatrix();
+        glTranslatef(a.posX, 0, a.posZ);
+        glutSolidCube(50);
+        glPopMatrix();
+        
+    }
     
     if(balas[0] == 1 /*&& moveEsfera >= -100*/){
         atiraEsfera();
