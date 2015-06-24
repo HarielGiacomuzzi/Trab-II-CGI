@@ -46,6 +46,8 @@ GLfloat rotX, rotY, rotX_ini, rotY_ini;
 GLfloat obsX, obsY=200, obsZ=400, obsX_ini, obsY_ini, obsZ_ini;
 GLfloat fAspect = 1, angle = 45;
 GLfloat win_width = 800, win_height = 600;
+GLfloat fimX=0, fimY=-100, fimZ=-900;
+
 
 std::vector< glm::vec3 > vertices;
 std::vector< glm::vec3 > uvs;
@@ -68,10 +70,11 @@ void PosicionaObservador(void)
     
     glTranslatef(-obsX,0,-obsZ);
     
+    
     //Outra opcao de camera
     //glRotatef(rotX,1,0,0);
     
-    glRotatef(rotY,0,1,0);
+ //   glRotatef(rotY,0,1,0);
     
     //gluLookAt(obsX,obsY,obsZ, 0.0,0.0,0.0, 0.0,1.0,0.0);
 }
@@ -201,14 +204,33 @@ void criaInimigos(int qtd){
 void atiraEsfera(void){
     glPushMatrix();
     glColor3f(1.0f, 1.0f, 0.0f);
-    glLoadIdentity();
+    //glLoadIdentity();
     moveEsfera = moveEsfera - 10;
     glTranslated(moveEsferaX, moveEsferaY, moveEsfera);
-    //glRotatef(rotEsferaY, 0, 1, 0);
     glutSolidSphere(10, 50, 50);
     printf("%d ", moveEsfera);
     glPopMatrix();
 }
+
+void jogador(void){
+    glPushMatrix();
+    glColor3f(1.0f, 1.0f, 0.0f);
+    glTranslated(obsX , -55, obsZ-400);
+    glutSolidCube(10);
+    glPopMatrix();
+}
+
+void desenhaFimTela(void){
+    glPushMatrix();
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glTranslated(fimX , fimY, fimZ);
+    glRotated(-90, 1, 0, 0);
+    glutSolidCone(50, 100, 10000, 10);
+    glPopMatrix();
+}
+
+
+
 // atira mais de uma esfera
 void atiraEsferas(float *ex, float *ey, float *ez){
     glPushMatrix();
@@ -228,6 +250,10 @@ void Desenha(void)
     
     EspecificaParametrosVisualizacao ();
     DesenhaChao();
+    
+    
+    //jogador();
+    
     
     //DefineIluminacao();
     
@@ -254,7 +280,7 @@ void Desenha(void)
     else{
         moveEsferaX = obsX;
         moveEsferaY = 0;
-        moveEsfera = 0;
+        moveEsfera = obsZ;
         rotEsferaY = rotY;
         bala = 0;
     }
@@ -274,7 +300,9 @@ void Desenha(void)
         }
     }*/
     
+    desenhaFimTela();
     
+    glColor3f(0, 1, 0);
     glMatrixMode(GL_PROJECTION); // change the current matrix to PROJECTION
     double matrix[16]; // 16 doubles in stack memory
     glGetDoublev(GL_PROJECTION_MATRIX, matrix); // get the values from PROJECTION matrix to local variable
@@ -290,7 +318,11 @@ void Desenha(void)
     glLoadMatrixd(matrix);
     glMatrixMode(GL_MODELVIEW);
     
+    glPushMatrix();
+    glColor3f(0, 1, 0);
     checkCollisions();
+    glPopMatrix();
+    
     
     glutSwapBuffers();
 }
@@ -409,14 +441,18 @@ void checkCollisions(){
     for (int i = 0; i < inimigos.size(); i++) {
         inimigo a = inimigos[i];
         
-        if ( (abs(moveEsferaX - a.posX) <  5) && (abs(moveEsfera - a.posZ) <  5) && bala == 1){
+        if ( (abs(moveEsferaX - a.posX) <  35) && (abs(moveEsfera - a.posZ) <  35) && bala == 1){
             output(0, 0, 255.0, 255.0, 255.0, 0, "Bateu!");
             printf("bateu no inimigo");
             bala = 0;
         }
         
-        if ((abs(obsX - a.posX) <  15) && (abs(obsZ - a.posZ) <  15)){
+        if ((abs(obsX - a.posX) <  35) && (abs(obsZ - a.posZ) <  35)){
             output(0, 0, 255.0, 255.0, 255.0, 0, "You Die!");
+        }
+        
+        if ((abs(obsX - fimX) <  35) && (abs(obsZ - fimZ) <  35)){
+            output(0, 0, 255.0, 255.0, 255.0, 0, "You Win!");
         }
     }
 }
@@ -436,7 +472,6 @@ void output(int x, int y, float r, float g, float b, int font, std::string strin
     int len, i;
     len = (int)string.size();
     for (i = 0; i < len; i++) {
-        printf("entra aqui");
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, string[i]);
     }
     glPopMatrix();
